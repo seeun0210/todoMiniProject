@@ -1,5 +1,6 @@
-import React from "react";
-
+import React, { useRef, useState, useEffect } from "react";
+import axios from "axios";
+import PropTypes from "prop-types";
 const axiosInstance = axios.create({
   baseURL: "http://localhost:8000",
 });
@@ -11,6 +12,7 @@ export default function TodoItem({
   setTodoList,
 }) {
   const inputTextRef = useRef();
+  const [isShow, setIsShow] = useState(false);
   const [isView, setIsView] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editTodo, setEditTodo] = useState(todo.title);
@@ -20,7 +22,7 @@ export default function TodoItem({
       inputTextRef.current.focus();
     }
   }, [isEditing]);
-  const onChange = (e) => {
+  const handleChange = (e) => {
     setEditTodo(e.target.value);
   };
 

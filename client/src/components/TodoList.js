@@ -2,8 +2,6 @@ import React from "react";
 import TodoItem from "./TodoItem";
 import PropTypes from "prop-types";
 
-import React from "react";
-
 export default function TodoList({ todoList, handleDelete, setTodoList }) {
   return (
     <ul>
