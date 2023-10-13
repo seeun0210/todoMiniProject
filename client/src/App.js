@@ -8,16 +8,19 @@ function App() {
       id: 1,
       title: "my todo1",
       visible: true,
+      done: false,
     },
     {
       id: 2,
       title: "my todo2",
       visible: true,
+      done: false,
     },
     {
       id: 3,
       title: "my todo3",
       visible: true,
+      done: false,
     },
   ]);
 
@@ -27,11 +30,14 @@ function App() {
     setTodoItems([...todoItems, newItem]);
   };
 
-  const deleteItem = (id) => {
-    const newTodoItems = todoItems.map((item) =>
-      item.id === id ? { ...item, visible: false } : item
-    );
-    setTodoItems(newTodoItems);
+  const deleteItem = (targetItem) => {
+    const newTodoItems = todoItems.filter((item) => item.id !== targetItem.id);
+
+    setTodoItems(newTodoItems); // 필터링 후 제거
+  };
+
+  const editItem = (id) => {
+    const editItem = todoItems.id;
   };
 
   return (
@@ -42,7 +48,8 @@ function App() {
           <Todo
             key={item.id}
             item={item}
-            deleteItem={() => deleteItem(item.id)}
+            deleteItem={deleteItem}
+            editItem={() => editItem(item.id)}
           />
         ) : null
       )}
