@@ -1,7 +1,7 @@
 const { Todo } = require("../models");
 const { Op } = require("sequelize");
 
-// GET /api/todos - show all todos (READ)
+// GET /api/todos - show all todos (READ
 exports.readTodos = async (_, res) => {
   try {
     let todos = await Todo.findAll();
@@ -20,8 +20,8 @@ exports.createTodo = async (req, res) => {
       done: false,
     });
     console.log(newTodo);
-    // res.send(newTodo);
-    res.end();
+    res.send(newTodo);
+    // res.end()
   } catch (err) {
     res.send(err);
   }

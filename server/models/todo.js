@@ -20,7 +20,7 @@ const Todo = (Sequelize, DataTypes) => {
     {
       tableName: "todo",
       freezeTableName: true,
-      timestamps: true,
+      timestamps: false,
       updatedAt: false,
     }
   );
