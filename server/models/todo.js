@@ -16,12 +16,16 @@ const Todo = (Sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
       },
+      user_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
     },
     {
       tableName: "todo",
       freezeTableName: true,
       timestamps: false,
-      updatedAt: false,
+      updatedAt: true,
     }
   );
 

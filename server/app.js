@@ -6,11 +6,16 @@ const { sequelize } = require("./models");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:3000", // 클라이언트의 주소 (포트 번호 포함)
+  })
+);
 
 const todoRouter = require("./routes/todo");
-app.use("/", todoRouter); // 기본주소: localhost:PORT/api
-
+const userRouter = require("./routes/user");
+app.use("/", todoRouter);
+app.use("/", userRouter);
 sequelize
   .sync({ force: false })
   .then(() => {

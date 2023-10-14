@@ -3,8 +3,10 @@ const { Op } = require("sequelize");
 
 // GET /api/todos - show all todos (READ
 exports.readTodos = async (_, res) => {
+  console.log("readTodos !!!!!!!");
   try {
     let todos = await Todo.findAll();
+    console.log(todos);
     res.send(todos);
   } catch (err) {
     res.send(err);
