@@ -1,48 +1,66 @@
 import React, { useState, useEffect } from "react";
+import {
+  BrowserRouter as Router,
+  Routes, // Routes를 추가
+  Route,
+  Navigate,
+} from "react-router-dom";
 import AddTodo from "./components/AddTodo";
 import Todo from "./components/Todo";
+import Login from "./components/Login";
+import Signup from "./components/Signup";
 import axios from "axios";
 
+function Main({ isLoggedIn, todoItems, addItem, deleteItem, updateItem }) {
+  return (
+    <div>
+      <h1>📄MY TODO APP</h1>
+      {isLoggedIn ? (
+        <div>
+          <AddTodo addItem={addItem} />
+          <div className="todoItemContainer">
+            {todoItems.map((item) => (
+              <Todo
+                key={item.id}
+                item={item}
+                deleteItem={deleteItem}
+                updateItem={updateItem}
+              />
+            ))}
+          </div>
+        </div>
+      ) : (
+        <Navigate to="/login" />
+      )}
+    </div>
+  );
+}
+
 function App() {
-  console.log(process.env.REACT_APP_DB_HOST);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [todoItems, setTodoItems] = useState([]);
+  const [isLoginView, setIsLoginView] = useState(true);
+  const [isSignupView, setIsSignupView] = useState(false);
+
   useEffect(() => {
-    const getTodos = async () => {
-      const res = await axios.get(`${process.env.REACT_APP_DB_HOST}/todos`);
-      setTodoItems(res.data);
-      console.log(res.data);
-    };
-  }, []);
-  const [todoItems, setTodoItems] = useState([
-    {
-      id: 1,
-      title: "my todo1",
-      visible: true,
-      done: false,
-    },
-    {
-      id: 2,
-      title: "my todo2",
-      visible: true,
-      done: false,
-    },
-    {
-      id: 3,
-      title: "my todo3",
-      visible: true,
-      done: false,
-    },
-  ]);
+    if (isLoggedIn) {
+      const getTodos = async () => {
+        const res = await axios.get(`${process.env.REACT_APP_DB_HOST}/login`);
+        setTodoItems(res.data);
+      };
+      getTodos();
+    }
+  }, [isLoggedIn]);
+
+  const handleLogin = (userData) => {
+    setIsLoggedIn(true);
+  };
 
   const addItem = async (newItem) => {
-    // newItem.id = todoItems.length + 1;
-    // newItem.visible = true;
-    // newItem.done = false;
-    // setTodoItems([...todoItems, newItem]);
     const res = await axios.post(
       `${process.env.REACT_APP_DB_HOST}/todo`,
       newItem
     );
-    console.log(res.data);
     setTodoItems([...todoItems, res.data]);
   };
 
@@ -51,30 +69,63 @@ function App() {
       `${process.env.REACT_APP_DB_HOST}/todo/${targetItem.id}`
     );
     const newTodoItems = todoItems.filter((item) => item.id !== targetItem.id);
-
-    setTodoItems(newTodoItems); // 필터링 후 제거
+    setTodoItems(newTodoItems);
   };
 
   const updateItem = async (targetItem) => {
-    // const editItem = ;
     await axios.patch(
       `${process.env.REACT_APP_DB_HOST}/todo/${targetItem.id}`,
       targetItem
     );
   };
 
+  const handleLoginView = () => {
+    setIsLoginView(true);
+    setIsSignupView(false);
+  };
+
+  const handleSignupView = () => {
+    setIsLoginView(false);
+    setIsSignupView(true);
+  };
+
   return (
     <div className="App">
-      <AddTodo addItem={addItem} />
-      {todoItems.map((item) =>
-        item.visible ? (
-          <Todo
-            key={item.id}
-            item={item}
-            deleteItem={deleteItem}
-            updateItem={updateItem}
+      <Router>
+        <Routes>
+          {" "}
+          {/* Routes로 감싸기 */}
+          <Route
+            path="/"
+            element={
+              <Main
+                isLoggedIn={isLoggedIn}
+                todoItems={todoItems}
+                addItem={addItem}
+                deleteItem={deleteItem}
+                updateItem={updateItem}
+              />
+            }
           />
-        ) : null
+          <Route
+            path="/login"
+            element={
+              isLoggedIn ? (
+                <Navigate to="/" />
+              ) : isLoginView ? (
+                <Login onLogin={handleLogin} />
+              ) : (
+                <Signup onSignup={handleLogin} />
+              )
+            }
+          />
+        </Routes>
+      </Router>
+      {!isLoggedIn && (
+        <div>
+          <p>아직 계정이 없으신가요? </p>
+          <button onClick={handleSignupView}>회원가입하러가기</button>
+        </div>
       )}
     </div>
   );

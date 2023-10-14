@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import styles from "../styles/btnStyles.css";
 
 export default function Todo({ item, deleteItem, updateItem }) {
   const [todoItem, setTodoItem] = useState(item);
@@ -60,10 +61,14 @@ export default function Todo({ item, deleteItem, updateItem }) {
         onChange={editEventHandler}
         onKeyDown={editKeyEventHandler}
       />
-      {isEditing ? ( // 수정 모드일 때 '적용' 버튼 표시
-        <button onClick={onApplyButtonClick}>Edit</button>
+      {isEditing ? (
+        <button className="edit-button" onClick={onApplyButtonClick}>
+          {/* Edit 아이콘 */}Edit
+        </button>
       ) : null}
-      <button onClick={onDeleteButtonClick}>DELETE</button>
+      <button className="delete-button" onClick={onDeleteButtonClick}>
+        Delete {/* X 아이콘 */}
+      </button>
     </div>
   );
 }
