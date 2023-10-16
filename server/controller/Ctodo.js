@@ -1,8 +1,19 @@
 const { Todo } = require("../models");
 const { Op } = require("sequelize");
+const app = require("../app");
 
 // GET /api/todos - show all todos (READ
 exports.readTodos = async (_, res) => {
+  // const userId = req.session.userId;
+  // if (userId) {
+  //   let todos = await Todo.findAll({
+  //     where: {
+  //       user_id: userId,
+  //     },
+  //   });
+  //   console.log(todos);
+  //   res.send(todos);
+  // }
   console.log("readTodos !!!!!!!");
   try {
     let todos = await Todo.findAll();
@@ -15,10 +26,11 @@ exports.readTodos = async (_, res) => {
 
 // POST /api/todo - create a new todo (CREATE)
 exports.createTodo = async (req, res) => {
-  console.log(">>>>", req.body);
+  console.log(">>>>createTodo", req.body);
   try {
     let newTodo = await Todo.create({
-      title: req.body.title,
+      title: req.body.newItem.title,
+      user_id: req.body.sessionId,
       done: false,
     });
     console.log(newTodo);
