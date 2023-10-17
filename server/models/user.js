@@ -6,7 +6,6 @@ const User = (Sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
-        allowNull: false,
       },
       user_name: {
         type: DataTypes.STRING(30),
@@ -17,7 +16,7 @@ const User = (Sequelize, DataTypes) => {
         allowNull: false,
       },
       user_email: {
-        type: DataTypes.STRING(30),
+        type: DataTypes.STRING(100),
         allowNull: false,
       },
       user_id: {
@@ -29,7 +28,8 @@ const User = (Sequelize, DataTypes) => {
       tableName: "todoUser",
       freezeTableName: true,
       timestamps: false,
-      updatedAt: true,
+      updatedAt: false,
+      createAt: true,
     }
   );
 

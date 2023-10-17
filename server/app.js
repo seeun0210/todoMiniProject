@@ -28,6 +28,7 @@ app.use((req, res, next) => {
 
     res.locals.Id = userId;
   }
+
   next();
 });
 app.use(express.urlencoded({ extended: true }));

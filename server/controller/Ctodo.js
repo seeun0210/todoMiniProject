@@ -3,7 +3,7 @@ const { Op } = require("sequelize");
 const app = require("../app");
 
 // GET /api/todos - show all todos (READ
-exports.readTodos = async (_, res) => {
+exports.readTodos = async (req, res) => {
   // const userId = req.session.userId;
   // if (userId) {
   //   let todos = await Todo.findAll({
@@ -16,6 +16,7 @@ exports.readTodos = async (_, res) => {
   // }
   console.log("readTodos !!!!!!!");
   try {
+    console.log(req.query);
     let todos = await Todo.findAll();
     console.log(todos);
     res.send(todos);
